@@ -362,73 +362,16 @@
       
         
           
-            <h1 id="跨领域推荐系统"><a href="#跨领域推荐系统" class="headerlink" title="跨领域推荐系统"></a>跨领域推荐系统</h1><h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>事实上，用户在不同领域之间的喜好是相互依赖或者互相关联的，我们不应该单独处理每种类型的物品，在某个领域获得的用户知识应该可以在其它几个领域中迁移和探究。此外，尽管这不是跨领域推荐的主要目标，但是一个系统应该可以在多个领域提供针对物品综合的(个性化)的推荐。</p>
-<p>跨领域的推荐可能无法带来更精确的推荐，但是可以提高推荐结果的多样性，<em>可能</em>会带来更高的用户满意度。此外，跨领域推荐还有其它方面的优势：(1). 解决冷启动问题；(2). 缓解稀疏性问题。</p>
-<h2 id="跨领域推荐"><a href="#跨领域推荐" class="headerlink" title="跨领域推荐"></a>跨领域推荐</h2><h3 id="领域的定义"><a href="#领域的定义" class="headerlink" title="领域的定义"></a>领域的定义</h3><p>共享某个特定推荐系统探究的一些特征的物品集合，其中，特征包括：内容属性/评分以及标签等。</p>
-<h3 id="跨领域推荐任务"><a href="#跨领域推荐任务" class="headerlink" title="跨领域推荐任务"></a>跨领域推荐任务</h3><p>符号说明：${U_A}$和${U_B}$分别表示在领域$A$和领域$B$的用户特征集合（用户喜好）；${J_A}$和${J_B}$分别表示在领域$A$和领域$B$的物品特征集合（物品属性）。</p>
-<p>定义了两个跨领域推荐任务：</p>
-<ul>
-<li>探究源领域关于用户和物品的知识来提高目标领域的物品推荐质量</li>
-<li>对属于不同领域的物品进行综合的推荐，例如在对两个集合交集中的用户推荐两个集合交集中的物品</li>
-</ul>
-<p>假定的推荐场景：用户和物品画像在多个系统（领域）分布，我们不得不建立一个机制来简介或者迁移知识（例如，内容属性映射/语义相似性以及评分模式等）。在这种情况下，典型的最近邻用户策略不靠谱，因为无法直接计算用户/物品对之间基于评分的相似性。</p>
-<h3 id="领域之间的显式关系类型"><a href="#领域之间的显式关系类型" class="headerlink" title="领域之间的显式关系类型"></a>领域之间的显式关系类型</h3><p>分为以下四种类型：</p>
-<ul>
-<li>无覆盖， $U_A \cap U_B  = \varnothing  \wedge J_A \cap J_B  = \varnothing$</li>
-<li>用户覆盖， $U_A \cap U_B  \ne \varnothing$</li>
-<li>物品覆盖， $J_A \cap J_B  \ne \varnothing$</li>
-<li>完整覆盖，$U_A \cap U_B  \ne \varnothing  \wedge J_A \cap J_B  \ne \varnothing$</li>
-</ul>
-<p>除了第一种类型之外，我们都可以通过考虑所有单一/通用领域的用户/物品评分，使用一种经典的协同过滤策略来获得高效的推荐。但是，在交叉比较小的情况下，如果使用基于内存的方法进行协同过滤的话，用户和物品的相似度计算可能会不精确。为了解决上面提高的无覆盖的情况，我们得开发一种方法能够发现或者构建领域之间显式/隐式关系类型，可以用作推荐系统中连接不同领域之间的语义桥梁。</p>
-<p>通过不同领域中用户/物品画像共享的“特征”来定义（交叉）关系。这些属性的本质可以是非常多样的，例如，评分，内容属性值对，社交标签，显示语义关系以及隐式潜在因子。由于领域表示的异构性，我们需要建立大量领域之间的特征映射函数。</p>
-<p>用户和物品特征以及它们之间的关系实现的推荐策略而定。下面将介绍一些典型的示例：</p>
-<h4 id="基于内容的关系"><a href="#基于内容的关系" class="headerlink" title="基于内容的关系"></a>基于内容的关系</h4><p>函数f将有相同意义但是属于不同领域的属性对关联起来。主要有基于社交标签的关系。</p>
-<h4 id="基于协同过滤的关系"><a href="#基于协同过滤的关系" class="headerlink" title="基于协同过滤的关系"></a>基于协同过滤的关系</h4><p>协同过滤中最流行的方法是使用最近邻算法计算评分矩阵M。有基于物品关系的协同过滤以及基于用户关系的协同过滤。</p>
-<h4 id="其它关系"><a href="#其它关系" class="headerlink" title="其它关系"></a>其它关系</h4><p>除了基于内容和基于协同过滤的关系之外，我们相信：系统可能会探究通过上下文特征C，例如时间（经常在圣诞节被观看的电影和音乐作曲）以及用户的情感（例如经常表达怀旧情感的电影和音乐作曲）。</p>
-<h2 id="跨领域推荐技术的分类"><a href="#跨领域推荐技术的分类" class="headerlink" title="跨领域推荐技术的分类"></a>跨领域推荐技术的分类</h2><p>主要有三种类型的策略：</p>
-<ul>
-<li>在多个系统中集成和探究显示用户喜好</li>
-<li>记录用户行为来学习用户喜好，并且用它们来在多个领域生成综合的推荐</li>
-<li>从多个领域组合推荐来构建单一的系统</li>
-</ul>
-<p>有些方法使用社交标签和语义知识来建立跨领域用户喜好以及/或者物品属性之间的关联。其它方法已经在领域之间没有显式用户/物品交叉时，应用了机器学习中的迁移学习技术来进行协同过滤。</p>
-<p>根据不同领域之间建立连接的知识迁移的类型，分为以下三类：</p>
-<ul>
-<li>共同的评分模式</li>
-<li>共同的潜在因子</li>
-<li>用户物品潜在因子的相关性</li>
-</ul>
-<p>自适应的模型：双向从源领域中探究信息以在目标领域生成推荐；集体模型：从若干个领域中收集数据/潜在可以在某些领域生成综合的推荐。</p>
-<h2 id="跨领域推荐的评估"><a href="#跨领域推荐的评估" class="headerlink" title="跨领域推荐的评估"></a>跨领域推荐的评估</h2><p>希望解决的主要问题：</p>
-<ul>
-<li><p><em>冷启动问题</em></p>
-</li>
-<li><p><em>稀疏问题</em></p>
-</li>
-</ul>
-<p>主要的评估标准：</p>
-<ul>
-<li>协同过滤算法：MAE/RMSE</li>
-<li>基于排序的度量：Precision/Success/Mean Reciprocal Rank/F-measure</li>
-</ul>
-<h2 id="多个领域集成用户喜好"><a href="#多个领域集成用户喜好" class="headerlink" title="多个领域集成用户喜好"></a>多个领域集成用户喜好</h2><p>一个直接生成跨领域推荐的方法是：在每个研究的领域中探究用户模型来获取用户对物品的喜好。在这种情况下，最大的挑战是：如何从多个系统中集成单个领域用户模型。</p>
-<ul>
-<li>领域独立的智能用户模型-使用一加权的图，将不同领域的喜好特征关联起来，边的权重为这些特征之间关系的强度。</li>
-</ul>
-<p>社交标签系统多领域用户喜好中的一个重要来源。一些研究人员[2]提出了方法从一些分类中过滤和加强这些标签以搭建聚合的用户偏好。然后将这些画像中的标签与WikiPedia中的概念相连接来创建一个语义的模型来放映用户在多个领域比较高级别的兴趣。</p>
-<h2 id="探究领域之间的显式关系"><a href="#探究领域之间的显式关系" class="headerlink" title="探究领域之间的显式关系"></a>探究领域之间的显式关系</h2><p>可以使用一些方法来集成多领域的用户喜好，包括：建立领域特征之间的关联并且在跨领域推荐的任务中探究它们。大部分这类方法都是<strong>基于内容的领域关系</strong>。</p>
-<p>Azak等人[3]提出了一个推荐模型，利用基于知识的决策规则来建立领域之间的关联。这个规则将用户偏好与跨领域的一些物品特征/物品内容属性关联起来。</p>
-<p>图是一个常用来表示领域之间关系的结构。Loizou等人[4]使用Wikipedia作为一个全局的词汇表使用一个通用的形式来描述多个领域中的物品。用户和物品作为图中的节点，而边表示用户评分以及物品之间的语义关系。这样的话，可以使用一个马尔科夫概率模型来基于用户和物品之间已有的路径来生成推荐。Cremonesi等人[5]将属于不同领域的物品表示在一个图中，并且将基于它们最相似的评分画像得到的最相邻的k个物品链接起来。这种方法需要建立在有一部分用户同时在多个领域中进行评分。一般说来，只有非常少的一部分物品满足这个条件，可能会导致领域之间的关联关系比较弱。Cremonesi等人提出，可以从图邻接矩阵的平方根中找出非直接的物品关系，并将其用作协同过滤推荐。Fernandez-Tobias等人[6]提出使用DBpedia作为一个多领域的知识源来构建一个语义网络将多个领域的概念进行连接。在这样一个语义网络中，有一个非循环的直连图形式，一个权重传播激活算法会在目标领域检索与其它输入源领域中高度相关的概念（物品）。</p>
-<h2 id="跨领域的迁移学习"><a href="#跨领域的迁移学习" class="headerlink" title="跨领域的迁移学习"></a>跨领域的迁移学习</h2><p>迁移学习是在机器学习领域一个非常热门的研究课题。其目标是通过使用从其它领域迁移过来的知识来提高特定领域学习任务。在推荐系统中，迁移学习技术最近被应用于<strong>协同过滤</strong>中。</p>
-<p>Li等人[7]提出了一个迁移学习的方法来缓解协同过滤中的稀疏性问题。这个方法在高评分密度的辅助领域的评分矩阵中执行一个共聚类的方法，然后在集群级别识别评分模式。假设用户评分行为在两个领域是相似的，那么这个方法就会在基于这个发现的评分模式来构建领域之间的关系。更详细说来，使用一个紧密的矩阵表示，然后将模式迁移到一个低评分密度的目标领域。主要优势是：不要求用户/物品的重合，使得该方法可以在许多现实场景中可以使用。</p>
-<p>Zhang等人[8]提出了一个协同过滤学习模型，在一个潜在因子空间识别评分关系。该方法将不同领域的评分矩阵转化为用户和物品的潜在因子。假设相关领域中的用户集合相同，那么上面的潜在因子就可以直接被用于跨领域推荐。</p>
-<p>Pat等人[9]提出了另一个基于潜在因子的模型，考虑了在不同协同过滤系统中评分表示中的异构型性。与上面介绍的方法不一样。该模型假设了两个复制领域的岑在，其中一个与用户相关，另一个与物品相关。这个模型应用了矩阵分解技术在复制领域中发现用户和物品的主要潜在组件，并且通过一个归一化技术将他们集成到目标领域中。</p>
-<h2 id="总结和未来展望"><a href="#总结和未来展望" class="headerlink" title="总结和未来展望"></a>总结和未来展望</h2><p>将建立领域之间关系的方法分为两大类：基于内容的方法和基于协同过滤的方法，以及自适应和集成式策略来探究源领域的信息用作目标领域推荐。</p>
-<p>主要目的：缓解冷启动和稀疏性问题。这些方法的一个限制是：需要在不同领域的物品有一个的评分集合交集。</p>
-<p>拓展：可以考虑将通过显式评分表现的用户偏好和其它类型的用户偏好（例如：社交标签/上下文特征以及隐式物品操作记录）相结合来增强语义框架。</p>
-<h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><p>[1] cross-domain recommender systems a survey of the state of the art<br>[2] Szomszor, M., Alani, H., Cantador, I., O’Hara, K., Shadbolt, N.: Semantic modelling of user interests based on cross-folksonomy analysis. In: Proc. of ISWC 2008, pp. 632–648 (2008)<br>[3] Azak, M.: CrosSing: A framework to develop knowledge-based recommenders in cross domains. MSc thesis, Middle East Technical University (2010)<br>[4] Loizou, A.: How to recommend music to film buffs: enabling the provision of recommendations from multiple domains. PhD dissertation, University of Southampton (2009)<br>[5] Cremonesi, P., Tripodi, A., Turrin, R.: Cross-domain recommender systems. In: Proc. of ICDMW 2011 Workshops, pp. 496–503 (2011)<br>[6] Fernández-Tobías, I., Cantador, I., Kaminskas, M., Ricci, F.: A generic semantic-based framework for cross-domain recommendation. In: Proc. of the 2nd International Workshop on Information Heterogeneity and Fusion in Recommender Systems, pp. 25–32. (2011) 7<br>[7] Li, B., Yang, Q., Xue, X.: Can movies and books collaborate? Cross-domain collaborative filtering for sparsity reduction. In: Proc. of IJCAI 2009, pp. 2052–2057 (2009)<br>[8] Zhang, Y., Cao, B., Yeung, D.Y.: Multi-domain collaborative filtering. In: Proc. of UAI 2010, pp. 725–732 (2010)<br>[9] Pan, W., Xiang, E.W., Liu, N.N., Yang, Q.: Transfer learning in collaborative filtering for sparsity reduction. In: Proc. of AAAI 2010 (2010)</p>
-
-          
+          跨领域推荐系统简介事实上，用户在不同领域之间的喜好是相互依赖或者互相关联的，我们不应该单独处理每种类型的物品，在某个领域获得的用户知识应该可以在其它几个领域中迁移和探究。此外，尽管这不是跨领域推荐的主要目标，但是一个系统应该可以在多个领域提供针对物品综合的(个性化)的推荐。
+跨领域的推荐可能无法带来
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2019/03/06/跨领域推荐/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -568,9 +511,16 @@
       
         
           
-            <p>嘻嘻，我来玩玩呢</p>
+          嘻嘻，我来玩玩呢
 
           
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2019/02/27/你好-Hexo/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -688,17 +638,15 @@
       
         
           
-            <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="noopener">Deployment</a></p>
-
-          
+          Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in 
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2019/02/27/hello-world/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
